@@ -1,9 +1,8 @@
-package com.github.henriquewegner.product_service_api.domain;
+package com.github.henriquewegner.product_service_api.domain.model;
 
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.util.UUID;
 
 @Data
 public class Product {

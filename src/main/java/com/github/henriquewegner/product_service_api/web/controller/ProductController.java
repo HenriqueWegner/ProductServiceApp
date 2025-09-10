@@ -1,8 +1,9 @@
 package com.github.henriquewegner.product_service_api.web.controller;
 
 import com.github.henriquewegner.product_service_api.ports.in.ProductUseCase;
+import com.github.henriquewegner.product_service_api.web.common.exceptions.InvalidRequestTypeException;
 import com.github.henriquewegner.product_service_api.web.dto.request.ProductRequestDTO;
-import com.github.henriquewegner.product_service_api.web.dto.request.ReserveRestockRequestDTO;
+import com.github.henriquewegner.product_service_api.web.dto.request.ProcessStockRequestDTO;
 import com.github.henriquewegner.product_service_api.web.dto.response.ProductResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -50,15 +51,15 @@ public class ProductController implements GenericController{
                 .orElseGet(ResponseEntity.notFound()::build);
     }
 
-    @PutMapping("/reserve")
-    public ResponseEntity<Void> reserveProduct(@RequestBody @Valid ReserveRestockRequestDTO reserveProductsRequestDTO){
-        productUseCase.reserveProduct(reserveProductsRequestDTO);
-        return ResponseEntity.ok().build();
-    }
+    @PutMapping("/stock")
+    public ResponseEntity<Void> updateStock(@RequestBody @Valid ProcessStockRequestDTO processStockRequestDTO) {
 
-    @PutMapping("/restock")
-    public ResponseEntity<Void> restockProduct(@RequestBody @Valid ReserveRestockRequestDTO restockProductRequestDTO){
-        productUseCase.restockProduct(restockProductRequestDTO);
+        switch (processStockRequestDTO.type()) {
+            case RESERVE -> productUseCase.reserveProduct(processStockRequestDTO);
+            case RESTOCK -> productUseCase.restockProduct(processStockRequestDTO);
+            case REMOVE -> productUseCase.removeStock(processStockRequestDTO);
+            default -> throw new InvalidRequestTypeException("Invalid operation type");
+        }
         return ResponseEntity.ok().build();
     }
 }

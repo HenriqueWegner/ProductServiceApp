@@ -55,6 +55,12 @@ public class GlobalExceptionHandler {
         return ErrorResponse.unprocessableEntity(e.getMessage());
     }
 
+    @ExceptionHandler(InvalidRequestTypeException.class)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    public ErrorResponse handleInvalidRequestTypeException(InvalidRequestTypeException e) {
+        return ErrorResponse.unprocessableEntity(e.getMessage());
+    }
+
     @ExceptionHandler(InvalidFieldException.class)
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     public ErrorResponse handleInvalidFieldException(InvalidFieldException e) {

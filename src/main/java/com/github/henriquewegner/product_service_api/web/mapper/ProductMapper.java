@@ -1,6 +1,6 @@
 package com.github.henriquewegner.product_service_api.web.mapper;
 
-import com.github.henriquewegner.product_service_api.domain.Product;
+import com.github.henriquewegner.product_service_api.domain.model.Product;
 import com.github.henriquewegner.product_service_api.infrastructure.persistence.entities.ProductEntity;
 import com.github.henriquewegner.product_service_api.web.dto.request.ProductRequestDTO;
 import com.github.henriquewegner.product_service_api.web.dto.response.ProductResponseDTO;
