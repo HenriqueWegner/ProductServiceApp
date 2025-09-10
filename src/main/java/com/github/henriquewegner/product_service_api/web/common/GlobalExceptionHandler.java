@@ -1,10 +1,7 @@
 package com.github.henriquewegner.product_service_api.web.common;
 
 
-import com.github.henriquewegner.product_service_api.web.common.exceptions.ApiIntegrationException;
-import com.github.henriquewegner.product_service_api.web.common.exceptions.DuplicatedRegistryException;
-import com.github.henriquewegner.product_service_api.web.common.exceptions.InvalidFieldException;
-import com.github.henriquewegner.product_service_api.web.common.exceptions.OrdersConflictException;
+import com.github.henriquewegner.product_service_api.web.common.exceptions.*;
 import com.github.henriquewegner.product_service_api.web.dto.response.ErrorResponse;
 import com.github.henriquewegner.product_service_api.web.dto.response.SingleError;
 import jakarta.persistence.EntityNotFoundException;
@@ -46,15 +43,15 @@ public class GlobalExceptionHandler {
         return ErrorResponse.conflict(e.getMessage());
     }
 
-    @ExceptionHandler(OrdersConflictException.class)
+    @ExceptionHandler(InsufficientStockException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    public ErrorResponse handleOrdersConflictException(OrdersConflictException e) {
+    public ErrorResponse handleInsuficcientStockException(InsufficientStockException e) {
         return ErrorResponse.conflict(e.getMessage());
     }
 
-    @ExceptionHandler(EntityNotFoundException.class)
+    @ExceptionHandler(ProductException.class)
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
-    public ErrorResponse handleEntityNotFoundException(EntityNotFoundException e) {
+    public ErrorResponse handleProductException(ProductException e) {
         return ErrorResponse.unprocessableEntity(e.getMessage());
     }
 
@@ -65,14 +62,6 @@ public class GlobalExceptionHandler {
                 "Validation error.",
                 List.of(new SingleError(e.getField(), e.getMessage())));
     }
-
-    @ExceptionHandler(ApiIntegrationException.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ErrorResponse handleApiIntegrationException(ApiIntegrationException e){
-        log.error("Unexpected error: {}", e);
-        return ErrorResponse.internalError(e.getMessage());
-    }
-
     @ExceptionHandler(RuntimeException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponse handleNonTreatedExceptions(RuntimeException e){
