@@ -1,4 +1,4 @@
-package io.github.henriquewegner.customer_api.infrastructure.config;
+package com.github.henriquewegner.product_service_api.infrastructure.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,7 +17,7 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/customers/**").hasAuthority("SCOPE_orders.read")
+                        .requestMatchers("/api/products/**").hasAuthority("SCOPE_orders.read")
                         .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2

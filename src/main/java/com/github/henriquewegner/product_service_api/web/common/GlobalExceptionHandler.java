@@ -4,7 +4,6 @@ package com.github.henriquewegner.product_service_api.web.common;
 import com.github.henriquewegner.product_service_api.web.common.exceptions.*;
 import com.github.henriquewegner.product_service_api.web.dto.response.ErrorResponse;
 import com.github.henriquewegner.product_service_api.web.dto.response.SingleError;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
@@ -45,7 +44,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(InsufficientStockException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    public ErrorResponse handleInsuficcientStockException(InsufficientStockException e) {
+    public ErrorResponse handleInsuficientStockException(InsufficientStockException e) {
         return ErrorResponse.conflict(e.getMessage());
     }
 

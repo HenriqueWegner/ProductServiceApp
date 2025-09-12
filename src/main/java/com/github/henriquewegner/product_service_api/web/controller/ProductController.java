@@ -13,6 +13,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -27,7 +28,7 @@ public class ProductController implements GenericController{
     private final ProductUseCase productUseCase;
 
     @PostMapping
-//    @PreAuthorize("hasRole(@environment.getProperty('security.roles.admin-access'))")
+    @PreAuthorize("hasRole(@environment.getProperty('security.roles.admin-access'))")
     @Operation(summary = "Save", description="Save new customer.")
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "Registered with success."),
@@ -43,6 +44,7 @@ public class ProductController implements GenericController{
     }
 
     @GetMapping("{id}")
+    @PreAuthorize("hasRole(@environment.getProperty('security.roles.admin-access'))")
     @Operation(summary = "Find Product", description="Find Product.")
     public ResponseEntity<ProductResponseDTO> findProduct(@PathVariable String id){
 
@@ -52,8 +54,9 @@ public class ProductController implements GenericController{
     }
 
     @PutMapping("/stock")
+    @PreAuthorize("hasRole(@environment.getProperty('security.roles.admin-access'))")
     public ResponseEntity<Void> updateStock(@RequestBody @Valid ProcessStockRequestDTO processStockRequestDTO) {
-
+        log.info("Entered updateStock controller");
         switch (processStockRequestDTO.type()) {
             case RESERVE -> productUseCase.reserveProduct(processStockRequestDTO);
             case RESTOCK -> productUseCase.restockProduct(processStockRequestDTO);

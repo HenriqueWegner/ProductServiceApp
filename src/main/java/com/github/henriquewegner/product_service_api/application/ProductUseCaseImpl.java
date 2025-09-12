@@ -71,6 +71,13 @@ public class ProductUseCaseImpl implements ProductUseCase {
         );
     }
 
+    private void checkIfProductIsRegistered(Product product) {
+        Optional<ProductEntity> productEntity = productRepository.findById(product.getSku());
+        if(productEntity.isPresent()){
+            throw new DuplicatedRegistryException("This product has already been registered.");
+        }
+    }
+
     private void processStockOperation(
             ProcessStockRequestDTO requestDTO,
             BiConsumer<ProductEntity, Integer> operation,
@@ -90,13 +97,6 @@ public class ProductUseCaseImpl implements ProductUseCase {
         );
     }
 
-    private void checkIfProductIsRegistered(Product product) {
-        Optional<ProductEntity> productEntity = productRepository.findById(product.getSku());
-        if(productEntity.isPresent()){
-            throw new DuplicatedRegistryException("This product has already been registered.");
-        }
-    }
-
     private void checkIfProductsExist(ProcessStockRequestDTO processStockRequestDTO){
         boolean allExist = processStockRequestDTO.items().stream()
                 .allMatch(item -> productRepository.findById(item.sku().toUpperCase()).isPresent());
@@ -105,7 +105,6 @@ public class ProductUseCaseImpl implements ProductUseCase {
             throw new ProductException("Some of the products do not exist.");
         }
     }
-
 
     private void reserveStock(ProductEntity productEntity, int quantity) {
         productEntity.setReserved(productEntity.getReserved() + quantity);

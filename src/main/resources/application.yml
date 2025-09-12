@@ -1,5 +1,5 @@
 server:
-  port: 8082
+  port: 8085
 spring:
   application:
     name: product-service-api
@@ -13,3 +13,15 @@ spring:
     properties:
       hibernate:
         format_sql: true
+security:
+  roles:
+    admin-access: ADMIN
+    user-access: USER
+    all-access: ADMIN,USER
+
+logging:
+  level:
+    org:
+      springframework.web: DEBUG
+      apache.catalina: DEBUG
+      apache.coyote: DEBUG
